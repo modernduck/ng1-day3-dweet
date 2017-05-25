@@ -1,4 +1,4 @@
-  angular.module('dweet', ['ngRoute'])
+  angular.module('dweet', ['ngRoute','dweet.core'])
     .config(function($routeProvider){
 
         $routeProvider.when("/", {
@@ -7,6 +7,13 @@
         }).when("/form", {
             templateUrl:"pages/form.html",
             
+        })
+
+    }).controller("MainController", function($scope, Dweet){
+        Dweet.getTemperature().then( data => {
+            $scope.data = data;
+            console.log($scope.data)
+            $scope.$apply()  
         })
 
     })
