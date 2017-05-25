@@ -2,7 +2,24 @@ angular.module('dweet.core', [])
     .factory('Dweet', function( $http ){
 
         return {
+            createData : (temp, participant) => {
+                console.log('created data')
+                
+                $http({
+                    method:"POST",
+                    url:"https://dweet.io:443/dweets/for/temp-ng1-class",
+                    data:{"temperature":temp, "participant":participant},
+                    
+                }).then(
+                    successResponse => {
+                        console.log('done')
+                    },
+                    errorResponse => {
+                        console.log('failed')
+                    }
+                )
 
+            },
             getTemperature : () => {
                 //Dweet.getTemperature().then()
                 var p = new Promise( (resolve, reject)  => {
@@ -24,7 +41,6 @@ angular.module('dweet.core', [])
                                         var now = new Date(data.created)
                                         if( now.getTime()  - latestTime.getTime() > 0)
                                             latestData = data;
-      
                                 }
                             })
                             resolve(latestData)
