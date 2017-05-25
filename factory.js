@@ -4,21 +4,24 @@ angular.module('dweet.core', [])
         return {
             createData : (temp, participant) => {
                 console.log('created data')
-                
-                $http({
-                    method:"POST",
-                    url:"https://dweet.io:443/dweets/for/temp-ng1-class",
-                    data:{"temperature":temp, "participant":participant},
-                    
-                }).then(
-                    successResponse => {
-                        console.log('done')
-                    },
-                    errorResponse => {
-                        console.log('failed')
-                    }
-                )
-
+                var p = new Promise( (resolve, reject)  => {
+                    $http({
+                        method:"POST",
+                        url:"https://dweet.io:443/dweets/for/temp-ng1-class",
+                        data:{"temperature":temp, "participant":participant},
+                        
+                    }).then(
+                        successResponse => {
+                            console.log('done')
+                            resolve(successResponse)
+                        },
+                        errorResponse => {
+                            console.log('failed')
+                            reject(errorResponse)
+                        }
+                    )
+                });
+                return p;
             },
             getTemperature : () => {
                 //Dweet.getTemperature().then()
