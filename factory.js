@@ -12,7 +12,22 @@ angular.module('dweet.core', [])
                     }).then(
                         successResponse => {
                             //change data what ever
-                            resolve(successResponse)
+                            var latestData;
+                            var haveLatest = false
+                            successResponse.data.with.forEach( data => {
+                                if(!haveLatest && data && data.created){
+                                    latestData = data;
+                                    haveLatest = true;
+                                }
+                                else {       
+                                        var latestTime = new Date(latestData.created)
+                                        var now = new Date(data.created)
+                                        if( now.getTime()  - latestTime.getTime() > 0)
+                                            latestData = data;
+      
+                                }
+                            })
+                            resolve(latestData)
                         },
                         errorResponse => {}
                     )
